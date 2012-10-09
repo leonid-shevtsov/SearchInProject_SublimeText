@@ -9,8 +9,12 @@
   "search_in_project_engine": "grep",
 
   /* Grep configuration */
+  /* Path to grep executable; if the standard one doesn't work for you, you can specify an explicit path in your user config file. */
   "search_in_project_Grep_path_to_executable": "grep",
+  /* Do NOT change these options; they are expected to be present for SearchInProject to work correctly. */
   "search_in_project_Grep_mandatory_options": "-nr",
+  /* Specify additional options to be used with all searches here. */
+  "search_in_project_Grep_common_options": "",
 
   /* Ack configuration */
   "search_in_project_Ack_path_to_executable": "ack",
