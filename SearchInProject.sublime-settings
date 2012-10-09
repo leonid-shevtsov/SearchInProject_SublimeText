@@ -1,0 +1,31 @@
+/* 
+  SearchInProject default settings
+  Do not change this file; change your user settings file instead
+  */
+{
+  /* What engine to use; one of grep, ack, the_silver_searcher, or git_grep (or find_str, on Windows) */
+  /* The default is grep because it's widely available on *nix machines, but ack and The Silver Searcher are both faster, */
+  /* and git grep is also faster, but only works inside a Git repository */
+  "search_in_project_engine": "grep",
+
+  /* Grep configuration */
+  "search_in_project_Grep_path_to_executable": "grep",
+  "search_in_project_Grep_mandatory_options": "-nr",
+
+  /* Ack configuration */
+  "search_in_project_Ack_path_to_executable": "ack",
+  "search_in_project_Ack_mandatory_options": "",
+  "search_in_project_Ack_common_options": "--type-add coffeescript=.coffee --type-add haml=.haml --type-add sass=.sass --type-add scss=.scss",
+  
+  /* TheSilverSearcher configuration */
+  "search_in_project_TheSilverSearcher_path_to_executable": "ag",
+  "search_in_project_TheSilverSearcher_mandatory_options": "",
+
+  /* GitGrep configuration */
+  "search_in_project_GitGrep_path_to_executable": "git grep",
+  "search_in_project_GitGrep_mandatory_options": "--line",
+  
+  /* FindStr configuration */
+  "search_in_project_FindStr_path_to_executable": "findstr",
+  "search_in_project_FindStr_mandatory_options": "/n /s" 
+}

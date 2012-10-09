@@ -1,0 +1,4 @@
+{
+  /* Use findstr on Windows, because it's built-in */
+  "search_in_project_engine": "find_str"
+}
