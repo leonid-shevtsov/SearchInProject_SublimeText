@@ -7,6 +7,11 @@ basedir = os.getcwdu()
 
 
 class SearchInProjectCommand(sublime_plugin.WindowCommand):
+    def __init__(self, window):
+        sublime_plugin.WindowCommand.__init__(self, window)
+        self.last_search_string = ''
+        pass
+
     def run(self):
         self.settings = sublime.load_settings('SearchInProject.sublime-settings')
         self.engine_name = self.settings.get("search_in_project_engine")
@@ -19,16 +24,16 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
         selection_text = view.substr(view.sel()[0])
         self.window.show_input_panel(
             "Search in project:",
-            selection_text,
+            selection_text or self.last_search_string,
             self.perform_search, None, None)
         pass
 
     def perform_search(self, text):
-        self.search_string = text
+        self.last_search_string = text
         folders = self.search_folders()
 
         self.common_path = self.find_common_path(folders)
-        self.results = self.engine.run(self.search_string, folders)
+        self.results = self.engine.run(text, folders)
         if self.results:
             self.results = [[result[0].replace(self.common_path, ''), result[1]] for result in self.results]
             self.window.show_quick_panel(self.results, self.goto_result)
