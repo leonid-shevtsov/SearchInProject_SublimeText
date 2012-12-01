@@ -45,8 +45,8 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
         if file_no != -1:
             file_name = self.common_path + self.results[file_no][0]
             view = self.window.open_file(file_name, sublime.ENCODED_POSITION)
-            regions = view.find_all(self.search_string)
-            view.add_regions("ack", regions, "entity.name.filename.find-in-files", "circle", sublime.DRAW_OUTLINED)
+            regions = view.find_all(self.last_search_string)
+            view.add_regions("search_in_project", regions, "entity.name.filename.find-in-files", "circle", sublime.DRAW_OUTLINED)
 
     def search_folders(self):
         return self.window.folders() or [os.path.dirname(self.window.active_view().file_name())]
