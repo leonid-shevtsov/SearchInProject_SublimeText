@@ -33,7 +33,7 @@ class Base:
         pipe = subprocess.Popen(command_line, shell=True, stdout=subprocess.PIPE)
         output, error = pipe.communicate()
         if pipe.returncode != 0:
-            raise Exception('Search engine returned error level: %s' % pipe.returncode, output, error)
+            return None
         return self._parse_output(self._sanitize_output(output).strip())
 
     def _command_line(self, query, folders):
