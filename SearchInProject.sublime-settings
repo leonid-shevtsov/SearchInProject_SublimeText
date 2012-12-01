@@ -23,7 +23,7 @@
 
   /* TheSilverSearcher configuration */
   "search_in_project_TheSilverSearcher_path_to_executable": "ag",
-  "search_in_project_TheSilverSearcher_mandatory_options": "--column --search-files",
+  "search_in_project_TheSilverSearcher_mandatory_options": "--column --search-files --nogroup --nocolor",
 
   /* GitGrep configuration */
   "search_in_project_GitGrep_path_to_executable": "git grep",
