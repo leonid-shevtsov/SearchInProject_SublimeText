@@ -1,4 +1,5 @@
 import subprocess
+import re
 
 
 class Base:
@@ -12,6 +13,8 @@ class Base:
         "mandatory_options",
         "common_options"
     ]
+
+    HAS_COLUMN_INFO = re.compile('^[^:]+:\d+:\d+:')
 
     def __init__(self, settings):
         """
@@ -52,7 +55,7 @@ class Base:
 
     def _parse_output(self, output):
         lines = output.split("\n")
-        line_parts = [line.split(":", 2) for line in lines]
+        line_parts = [line.split(":", 3) if Base.HAS_COLUMN_INFO.match(line) else line.split(":", 2) for line in lines]
         line_parts = self._filter_lines_without_matches(line_parts)
         return [(":".join(line[0:-1]), line[-1].strip()) for line in line_parts]
 
