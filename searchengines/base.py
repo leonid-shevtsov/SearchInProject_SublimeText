@@ -48,10 +48,10 @@ class Base:
             self.mandatory_options,
             self.common_options,
             query
-            ] + folders)
+        ] + folders)
 
     def _sanitize_output(self, output):
-        return unicode(output, errors='replace')
+        return output.decode('utf-8')
 
     def _parse_output(self, output):
         lines = output.split("\n")
