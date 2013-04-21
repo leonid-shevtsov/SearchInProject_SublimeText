@@ -1,4 +1,4 @@
-# Search In Project v1.1.0
+# Search In Project v1.2.0
 
 A plugin for [Sublime Text 2](http://www.sublimetext.com/).
 
@@ -11,6 +11,8 @@ It opens a quick selection panel to browse results, and highlights matches insid
 It's easy to add another search tool, if you so desire.
 
 ## Installation
+
+[Package Control](http://wbond.net/sublime_packages/package_control): install package **SearchInProject** (this is the recommended 
 
 Copy the folder into the Packages folder.
 
