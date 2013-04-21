@@ -1,10 +1,26 @@
 import sublime
 import sublime_plugin
 import os.path
+
+
+import os, sys, inspect
+# realpath() with make your script run, even if you symlink it :)
+cmd_folder = os.path.realpath(os.path.abspath(os.path.split(inspect.getfile( inspect.currentframe() ))[0]))
+if cmd_folder not in sys.path:
+    sys.path.insert(0, cmd_folder)
+# use this if you want to include modules from a subforder
+cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],"subfolder")))
+if cmd_subfolder not in sys.path:
+    sys.path.insert(0, cmd_subfolder)
+ # Info:
+ # cmd_folder = os.path.dirname(os.path.abspath(__file__)) # DO NOT USE __file__ !!!
+ # __file__ fails if script is called in different ways on Windows
+ # __file__ fails if someone does os.chdir() before
+ # sys.argv[0] also fails because it doesn't not always contains the path
+
 import searchengines
 
-basedir = os.getcwdu()
-
+basedir = os.getcwd()
 
 class SearchInProjectCommand(sublime_plugin.WindowCommand):
     def __init__(self, window):
@@ -15,7 +31,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
     def run(self):
         self.settings = sublime.load_settings('SearchInProject.sublime-settings')
         self.engine_name = self.settings.get("search_in_project_engine")
-        pushd = os.getcwdu()
+        pushd = os.getcwd()
         os.chdir(basedir)
         __import__("searchengines.%s" % self.engine_name)
         self.engine = searchengines.__dict__[self.engine_name].engine_class(self.settings)
@@ -35,7 +51,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
         self.common_path = self.find_common_path(folders)
         self.results = self.engine.run(text, folders)
         if self.results:
-            self.results = [[result[0].replace(self.common_path, ''), result[1]] for result in self.results]
+            self.results = [[result[0].replace(self.common_path.replace('\"', ''), ''), result[1]] for result in self.results]
             self.window.show_quick_panel(self.results, self.goto_result)
         else:
             self.results = []
@@ -43,15 +59,20 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
 
     def goto_result(self, file_no):
         if file_no != -1:
-            file_name = self.common_path + self.results[file_no][0]
+            file_name = self.common_path.replace('\"', '') + self.results[file_no][0]
             view = self.window.open_file(file_name, sublime.ENCODED_POSITION)
             regions = view.find_all(self.last_search_string)
             view.add_regions("search_in_project", regions, "entity.name.filename.find-in-files", "circle", sublime.DRAW_OUTLINED)
 
     def search_folders(self):
-        return self.window.folders() or [os.path.dirname(self.window.active_view().file_name())]
+        window_folders = self.window.folders()
+        for index, item in enumerate(window_folders):
+                window_folders[index] = "\"" + window_folders[index] + "\""
+        file_dirname = ["\"" + os.path.dirname(self.window.active_view().file_name()) + "\""]
+        return window_folders or file_dirname
 
     def find_common_path(self, paths):
+        paths = [path.replace("\"", "") for path in paths]
         paths = [path.split("/") for path in paths]
         common_path = []
         while 0 not in [len(path) for path in paths]:
@@ -60,4 +81,4 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
                 common_path += next_segment
             else:
                 break
-        return "/".join(common_path) + "/"
+        return "\"" + "/".join(common_path) + "/\""
