@@ -32,8 +32,10 @@ class Base:
             by a semicolon, and the second element is the result string
         """
         command_line = self._command_line(query, folders)
+        workingFolder = folders[0][1:-1]   # Nasty hack to get the first folder and remove surrounding quotes
+        print("Running in working folder: %s" % workingFolder)
         print("Running: %s" % command_line)
-        pipe = subprocess.Popen(command_line, shell=True, stdout=subprocess.PIPE)
+        pipe = subprocess.Popen(command_line, shell=True, stdout=subprocess.PIPE, cwd=workingFolder)
         output, error = pipe.communicate()
         if pipe.returncode != 0:
             return None
