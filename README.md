@@ -1,6 +1,6 @@
 # Search In Project v1.2.0
 
-A plugin for [Sublime Text 2](http://www.sublimetext.com/).
+A plugin for [Sublime Text](http://www.sublimetext.com/). Versions 2 and 3 are supported.
 
 ## Synopsis
 
@@ -12,9 +12,9 @@ It's easy to add another search tool, if you so desire.
 
 ## Installation
 
-[Package Control](http://wbond.net/sublime_packages/package_control): install package **SearchInProject** (this is the recommended 
+* [Package Control](http://wbond.net/sublime_packages/package_control): install package **SearchInProject** (this is the recommended method)
 
-Copy the folder into the Packages folder.
+* Download an [archive of the repository](https://github.com/leonid-shevtsov/SearchInProject_SublimeText/archive/master.zip), and unzip into the Sublime Text Packages folder.
 
 ## Usage
 
