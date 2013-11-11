@@ -1,3 +1,4 @@
+###  Start of fixing import paths
 import os, sys, inspect
 # realpath() with make your script run, even if you symlink it :)
 cmd_folder = os.path.realpath(os.path.abspath(os.path.split(inspect.getfile( inspect.currentframe() ))[0]))
@@ -12,6 +13,7 @@ if cmd_subfolder not in sys.path:
  # __file__ fails if script is called in different ways on Windows
  # __file__ fails if someone does os.chdir() before
  # sys.argv[0] also fails because it doesn't not always contains the path
+### End of fixing import paths
 
 import base
 
