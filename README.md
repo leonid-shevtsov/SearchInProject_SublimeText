@@ -1,4 +1,4 @@
-# Search In Project v1.2.0
+# Search In Project v1.3.0
 
 A plugin for [Sublime Text](http://www.sublimetext.com/). Versions 2 and 3 are supported.
 
@@ -29,7 +29,7 @@ If you run Search In Project again, it will remember the last search string, so 
 
 ## Configuration
 
-Configuration is stored in a separate, user-specific `SearchInProject.sublime-settings` file. See the default file for configuration options; links to both could be
+Configuration is stored in a separate, user-specific `SearchInProject.sublime-settings` file. See the default file for configuration options; links to both <colgroup></colgroup>ld be
 found in the main menu in `Preferences -> Package Settings -> Search In Project`.
 
 On any OS I recommend you to install [ack](http://betterthangrep.com/), and use it instead of the default `grep`/`findstr`, because it's much faster. [Here's how to install ack on Windows](http://stackoverflow.com/questions/1023710/how-can-i-install-and-use-ack-library-on-windows).

@@ -1,5 +1,9 @@
 # Changelog for SearchInProject
 
+## v1.3.0 2013-11-11
+
+* Further fixes for Sublime Text 3
+
 ## v1.2.0 2013-04-21
 
 * Works with Sublime Text 3 (thanks to @basteln, and also at his word)
