@@ -18,13 +18,13 @@
                         [
                             {
                                 "command": "open_file",
-                                "args": {"file": "${packages}/SearchInProject/README.md"},
+                                "args": {"file": "${packages}/Search in Project/README.md"},
                                 "caption": "README"
                             },
                             { "caption": "-" },
                             {
                                 "command": "open_file",
-                                "args": {"file": "${packages}/SearchInProject/SearchInProject.sublime-settings"},
+                                "args": {"file": "${packages}/Search in Project/SearchInProject.sublime-settings"},
                                 "caption": "Settings – Default"
                             },
                             {
@@ -36,7 +36,7 @@
                             {
                                 "command": "open_file",
                                 "args": {
-                                    "file": "${packages}/SearchInProject/Default (OSX).sublime-keymap",
+                                    "file": "${packages}/Search in Project/Default (OSX).sublime-keymap",
                                     "platform": "OSX"
                                 },
                                 "caption": "Key Bindings – Default"
@@ -44,7 +44,7 @@
                             {
                                 "command": "open_file",
                                 "args": {
-                                    "file": "${packages}/SearchInProject/Default (Linux).sublime-keymap",
+                                    "file": "${packages}/Search in Project/Default (Linux).sublime-keymap",
                                     "platform": "Linux"
                                 },
                                 "caption": "Key Bindings – Default"
@@ -52,7 +52,7 @@
                             {
                                 "command": "open_file",
                                 "args": {
-                                    "file": "${packages}/SearchInProject/Default (Windows).sublime-keymap",
+                                    "file": "${packages}/Search in Project/Default (Windows).sublime-keymap",
                                     "platform": "Windows"
                                 },
                                 "caption": "Key Bindings – Default"
