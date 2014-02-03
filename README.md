@@ -4,7 +4,7 @@ A plugin for [Sublime Text](http://www.sublimetext.com/). Versions 2 and 3 are s
 
 ## Synopsis
 
-This plugin makes it possible to use various external search tools (`grep`, `ack`, `ag`, `git grep`, or `findstr`) to find strings aross your entire current Sublime Text project.
+This plugin lets you use your favorite search tool (`grep`, `ack`, `ag`, `git grep`, or `findstr`) to find strings aross your entire current Sublime Text project.
 
 It opens a quick selection panel to browse results, and highlights matches inside files.
 
@@ -12,7 +12,7 @@ It's easy to add another search tool, if you so desire.
 
 ## Installation
 
-* [Package Control](http://wbond.net/sublime_packages/package_control): install package **SearchInProject** (this is the recommended method)
+* [Package Control](http://sublime.wbond.net): install package **Search in Project** (this is the recommended method)
 
 * Download an [archive of the repository](https://github.com/leonid-shevtsov/SearchInProject_SublimeText/archive/master.zip), and unzip into the Sublime Text Packages folder.
 
@@ -29,10 +29,10 @@ If you run Search In Project again, it will remember the last search string, so 
 
 ## Configuration
 
-Configuration is stored in a separate, user-specific `SearchInProject.sublime-settings` file. See the default file for configuration options; links to both <colgroup></colgroup>ld be
+Configuration is stored in a separate, user-specific `SearchInProject.sublime-settings` file. See the default file for configuration options; links to both could be
 found in the main menu in `Preferences -> Package Settings -> Search In Project`.
 
-On any OS I recommend you to install [ack](http://betterthangrep.com/), and use it instead of the default `grep`/`findstr`, because it's much faster. [Here's how to install ack on Windows](http://stackoverflow.com/questions/1023710/how-can-i-install-and-use-ack-library-on-windows).
+You should install and use [ack](http://betterthangrep.com/) instead of the default `grep`/`findstr`, because it's much faster. [Here's how to install ack on Windows](http://stackoverflow.com/questions/1023710/how-can-i-install-and-use-ack-library-on-windows).
 
 * * *
 
