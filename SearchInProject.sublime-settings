@@ -8,6 +8,9 @@
   /* and git grep is also faster, but only works inside a Git repository */
   "search_in_project_engine": "grep",
 
+  /* What shell to use to run the command. Uses bash by default on Linux/OSX, and cmd on Windows */
+  /* "search_in_project_shell": "/path/to/your/shell", */
+
   /* Grep configuration */
   /* Path to grep executable; if the standard one doesn't work for you, you can specify an explicit path in your user config file. */
   "search_in_project_Grep_path_to_executable": "grep",
