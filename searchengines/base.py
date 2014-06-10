@@ -40,9 +40,10 @@ class Base:
             stderr=subprocess.PIPE
             )
         output, error = pipe.communicate()
+
         if pipe.returncode != 0:
-            return None
-        return self._parse_output(self._sanitize_output(output).strip())
+            raise RuntimeError(self._sanitize_output(error))
+        return self._parse_output(self._sanitize_output(output))
 
     def _command_line(self, query, folders):
         """
@@ -56,7 +57,7 @@ class Base:
         ] + folders)
 
     def _sanitize_output(self, output):
-        return output.decode('utf-8')
+        return output.decode('utf-8').strip()
 
     def _parse_output(self, output):
         lines = output.split("\n")

@@ -53,13 +53,18 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
         folders = self.search_folders()
 
         self.common_path = self.find_common_path(folders)
-        self.results = self.engine.run(text, folders)
-        if self.results:
-            self.results = [[result[0].replace(self.common_path.replace('\"', ''), ''), result[1]] for result in self.results]
-            self.window.show_quick_panel(self.results, self.goto_result)
-        else:
+        try:
+            self.results = self.engine.run(text, folders)
+            if self.results:
+                self.results = [[result[0].replace(self.common_path.replace('\"', ''), ''), result[1]] for result in self.results]
+                self.window.show_quick_panel(self.results, self.goto_result)
+            else:
+                self.results = []
+                self.window.show_quick_panel(["No results"], None)
+        except RuntimeError as e:
             self.results = []
-            self.window.show_quick_panel(["No results"], None)
+            self.window.show_quick_panel([["%s running search engine %s:"%(e.__class__.__name__,self.engine_name),  e.args[0]]], None)
+
 
     def goto_result(self, file_no):
         if file_no != -1:
