@@ -1,5 +1,10 @@
 # Changelog for SearchInProject
 
+## v1.4.0 2014-06-10
+
+* Use bash to locate executables; should work out-of-the-box on the majority of systems
+* Verbose error message when the search engine fails to execute for any reason
+
 ## v1.3.0 2013-11-11
 
 * Further fixes for Sublime Text 3
