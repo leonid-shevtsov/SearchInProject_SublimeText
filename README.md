@@ -1,4 +1,4 @@
-# Search In Project v1.3.0
+# Search In Project v1.4.0
 
 A plugin for [Sublime Text](http://www.sublimetext.com/). Versions 2 and 3 are supported.
 
