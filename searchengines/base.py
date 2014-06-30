@@ -57,7 +57,7 @@ class Base:
         ] + folders)
 
     def _sanitize_output(self, output):
-        return output.decode('utf-8').strip()
+        return output.decode('utf-8', 'ignore').strip()
 
     def _parse_output(self, output):
         lines = output.split("\n")
