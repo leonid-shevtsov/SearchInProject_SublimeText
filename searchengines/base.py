@@ -53,7 +53,7 @@ class Base:
             self.path_to_executable,
             self.mandatory_options,
             self.common_options,
-            query
+            "'" + query.replace("'", "'\\''") + "'"
         ] + folders)
 
     def _sanitize_output(self, output):
