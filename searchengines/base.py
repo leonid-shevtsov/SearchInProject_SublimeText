@@ -1,6 +1,7 @@
 import subprocess
 import re
-
+import shlex
+import sys
 
 class Base:
     """
@@ -22,7 +23,10 @@ class Base:
         """
         self.settings = settings
         for setting_name in self.__class__.SETTINGS:
-            setattr(self, setting_name, self.settings.get(self._full_settings_name(setting_name), ''))
+            setting_value = self.settings.get(self._full_settings_name(setting_name), '')
+            if sys.version < '3':
+                setting_value = setting_value.encode()
+            setattr(self, setting_name, setting_value)
         pass
 
     def run(self, query, folders):
@@ -31,11 +35,9 @@ class Base:
             the absolute file path, and optionally row information, separated
             by a semicolon, and the second element is the result string
         """
-        command_line = self._command_line(query, folders)
-        print("Running: %s" % command_line)
-        pipe = subprocess.Popen(command_line,
-            shell=True,
-            executable=self.settings.get('search_in_project_shell', None),
+        arguments = self._arguments(query, folders)
+        print("Running: %s" % " ".join(arguments))
+        pipe = subprocess.Popen(arguments,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE
             )
@@ -45,16 +47,16 @@ class Base:
             raise RuntimeError(self._sanitize_output(error))
         return self._parse_output(self._sanitize_output(output))
 
-    def _command_line(self, query, folders):
+    def _arguments(self, query, folders):
         """
-            Prepare a command line for the search engine.
+            Prepare arguments list for the search engine.
         """
-        return " ".join([
-            self.path_to_executable,
-            self.mandatory_options,
-            self.common_options,
-            query
-        ] + folders)
+        return (
+            [self.path_to_executable] +
+            shlex.split(self.mandatory_options) +
+            shlex.split(self.common_options) +
+            [query] +
+            folders)
 
     def _sanitize_output(self, output):
         return output.decode('utf-8', 'ignore').strip()

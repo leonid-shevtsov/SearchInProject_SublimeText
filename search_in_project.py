@@ -75,9 +75,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
 
     def search_folders(self):
         window_folders = self.window.folders()
-        for index, item in enumerate(window_folders):
-                window_folders[index] = "\"" + window_folders[index] + "\""
-        file_dirname = ["\"" + os.path.dirname(self.window.active_view().file_name()) + "\""]
+        file_dirname = [os.path.dirname(self.window.active_view().file_name())]
         return window_folders or file_dirname
 
     def find_common_path(self, paths):
