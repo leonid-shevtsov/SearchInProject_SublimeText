@@ -49,6 +49,9 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
         pass
 
     def perform_search(self, text):
+        if not text:
+            return
+
         self.last_search_string = text
         folders = self.search_folders()
 
