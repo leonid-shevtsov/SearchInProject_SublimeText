@@ -44,7 +44,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
         selection_text = view.substr(view.sel()[0])
         self.window.show_input_panel(
             "Search in project:",
-            selection_text or self.last_search_string,
+            not "\n" in selection_text and selection_text or self.last_search_string,
             self.perform_search, None, None)
         pass
 
