@@ -37,10 +37,15 @@ class Base:
         """
         arguments = self._arguments(query, folders)
         print("Running: %s" % " ".join(arguments))
-        pipe = subprocess.Popen(arguments,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
-            )
+
+        try:
+            pipe = subprocess.Popen(arguments,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE
+                )
+        except OSError as e: # Not FileNotFoundError for compatibility with Sublime Text 2
+            raise RuntimeError("Could not find executable %s" % self.path_to_executable)
+
         output, error = pipe.communicate()
 
         if self._is_search_error(pipe.returncode, output, error):

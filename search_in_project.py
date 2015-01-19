@@ -64,9 +64,9 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
             else:
                 self.results = []
                 self.window.show_quick_panel(["No results"], None)
-        except RuntimeError as e:
+        except Exception as e:
             self.results = []
-            sublime.error_message("%s running search engine %s:"%(e.__class__.__name__,self.engine_name) + "\n" + e.args[0])
+            sublime.error_message("%s running search engine %s:"%(e.__class__.__name__,self.engine_name) + "\n" + str(e))
 
 
     def goto_result(self, file_no):
