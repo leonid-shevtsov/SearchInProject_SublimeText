@@ -77,9 +77,14 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
             view.add_regions("search_in_project", regions, "entity.name.filename.find-in-files", "circle", sublime.DRAW_OUTLINED)
 
     def search_folders(self):
-        window_folders = self.window.folders()
-        file_dirname = [os.path.dirname(self.window.active_view().file_name())]
-        return window_folders or file_dirname
+        search_folders = self.window.folders()
+        if not search_folders:
+            filename = self.window.active_view().file_name()
+            if filename:
+                search_folders = [os.path.dirname(filename)]
+            else:
+                search_folders = [os.path.expanduser("~")]
+        return search_folders
 
     def find_common_path(self, paths):
         paths = [path.replace("\"", "") for path in paths]
