@@ -2,6 +2,7 @@ import subprocess
 import re
 import shlex
 import sys
+import os
 
 class Base:
     """
@@ -27,7 +28,8 @@ class Base:
             if sys.version < '3':
                 setting_value = setting_value.encode()
             setattr(self, setting_name, setting_value)
-        pass
+        if os.name=='nt':
+            self._resolve_windows_path_to_executable()
 
     def run(self, query, folders):
         """
@@ -80,3 +82,13 @@ class Base:
 
     def _filter_lines_without_matches(self, line_parts):
         return filter(lambda line: len(line) > 2, line_parts)
+
+    def _resolve_windows_path_to_executable(self):
+        try:
+            self.path_to_executable = self._sanitize_output(subprocess.check_output("where %s" % self.path_to_executable))
+        except subprocess.CalledProcessError:
+            # do nothing, executable not found
+            pass
+        except sys.FileNotFoundError:
+            # do nothing, executable not found
+            pass
