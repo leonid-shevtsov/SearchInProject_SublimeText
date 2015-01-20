@@ -31,5 +31,5 @@
 
   /* FindStr configuration */
   "search_in_project_FindStr_path_to_executable": "findstr",
-  "search_in_project_FindStr_mandatory_options": "/n /s"
+  "search_in_project_FindStr_mandatory_options": "/n /s /p"
 }

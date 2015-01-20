@@ -15,6 +15,7 @@ if cmd_subfolder not in sys.path:
  # sys.argv[0] also fails because it doesn't not always contains the path
 ### End of fixing import paths
 
+import shlex
 import base
 
 
@@ -27,5 +28,8 @@ class FindStr (base.Base):
             shlex.split(self.mandatory_options) +
             shlex.split(self.common_options) +
             ['"/d:%s"' % ":".join(folders), query, "*.*"])
+
+    def _is_search_error(self, returncode, output, error):
+        return self._sanitize_output(error) != ""
 
 engine_class = FindStr
