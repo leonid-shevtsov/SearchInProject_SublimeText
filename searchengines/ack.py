@@ -16,9 +16,13 @@ if cmd_subfolder not in sys.path:
 ### End of fixing import paths
 
 import base
-
+import os
 
 class Ack (base.Base):
-    pass
+    def __init__(self, settings):
+        base.Base.__init__(self, settings)
+        # Ubuntu's ack from repos is called ack-grep by default
+        if 'Ubuntu' in os.uname().version and self.path_to_executable=='ack' and os.system('which ack-grep')==0:
+            self.path_to_executable = 'ack-grep'
 
 engine_class = Ack
