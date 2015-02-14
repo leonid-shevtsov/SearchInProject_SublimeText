@@ -30,6 +30,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
     def __init__(self, window):
         sublime_plugin.WindowCommand.__init__(self, window)
         self.last_search_string = ''
+        self.preview_view = None
         pass
 
     def run(self):
@@ -60,7 +61,11 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
             self.results = self.engine.run(text, folders)
             if self.results:
                 self.results = [[result[0].replace(self.common_path.replace('\"', ''), ''), result[1]] for result in self.results]
-                self.window.show_quick_panel(self.results, self.goto_result)
+                self.previous_view = self.window.active_view()
+                if sublime.version() > '3000':
+                    self.window.show_quick_panel(self.results, self.goto_result, 0, -1, self.preview_result)
+                else:
+                    self.window.show_quick_panel(self.results, self.goto_result)
             else:
                 self.results = []
                 sublime.message_dialog('No results')
@@ -68,6 +73,9 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
             self.results = []
             sublime.error_message("%s running search engine %s:"%(e.__class__.__name__,self.engine_name) + "\n" + str(e))
 
+    def preview_result(self, file_no):
+        file_name = self.common_path.replace('\"', '') + self.results[file_no][0]
+        self.preview_view = self.window.open_file(file_name, sublime.ENCODED_POSITION|sublime.TRANSIENT)
 
     def goto_result(self, file_no):
         if file_no != -1:
@@ -75,6 +83,8 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
             view = self.window.open_file(file_name, sublime.ENCODED_POSITION)
             regions = view.find_all(self.last_search_string)
             view.add_regions("search_in_project", regions, "entity.name.filename.find-in-files", "circle", sublime.DRAW_OUTLINED)
+        else:
+            self.window.focus_view(self.previous_view)
 
     def search_folders(self):
         search_folders = self.window.folders()
