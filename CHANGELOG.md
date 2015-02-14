@@ -1,5 +1,17 @@
 # Changelog for SearchInProject
 
+## v1.5.0 2015-01-21 "The Tested Release"
+
+* No more using bash to locate executables.
+* Actually, no more using shell when invoking search engine at all! This leads to a huge performance boost on typical systems.
+* The search string is now passed as a single argument to the engine. This means you no longer have to quote special characters.
+* Fix The Silver Searcher empty results incorrectly reporting as an error message.
+* Show error messages in a nice error box instead of the list view.
+* Do not run search with empty query.
+* Do not use selection text as preset query if it is multi-line.
+* Tested for full compatibility with OSX and Linux. Unfortunately, Windows compatibility will have to wait for the next release.
+* Multiple compatibility fixes for ag, ack, git-grep.
+
 ## v1.4.1 2014-06-30
 
 * Fix for erros when search engine output contains binary or non-UTF text
