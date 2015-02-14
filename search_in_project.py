@@ -63,7 +63,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
                 self.window.show_quick_panel(self.results, self.goto_result)
             else:
                 self.results = []
-                self.window.show_quick_panel(["No results"], None)
+                sublime.message_dialog('No results')
         except Exception as e:
             self.results = []
             sublime.error_message("%s running search engine %s:"%(e.__class__.__name__,self.engine_name) + "\n" + str(e))
