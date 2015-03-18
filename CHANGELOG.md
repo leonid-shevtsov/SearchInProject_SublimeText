@@ -1,5 +1,10 @@
 # Changelog for SearchInProject
 
+## v1.5.1 2015-03-18
+
+* Fix ack detection code for Sublime Text 2, by @keimlink
+* Show empty results message in a messagebox instead of the results window
+
 ## v1.5.0 2015-01-21 "The Tested Release"
 
 * No more using bash to locate executables.
