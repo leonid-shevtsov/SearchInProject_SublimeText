@@ -33,14 +33,14 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
         pass
 
     def run(self):
+        view = self.window.active_view()
         self.settings = sublime.load_settings('SearchInProject.sublime-settings')
-        self.engine_name = self.settings.get("search_in_project_engine")
+        self.engine_name = view.settings().get("search_in_project_engine", self.settings.get("search_in_project_engine"))
         pushd = os.getcwd()
         os.chdir(basedir)
         __import__("searchengines.%s" % self.engine_name)
-        self.engine = searchengines.__dict__[self.engine_name].engine_class(self.settings)
+        self.engine = searchengines.__dict__[self.engine_name].engine_class(self.settings, view)
         os.chdir(pushd)
-        view = self.window.active_view()
         selection_text = view.substr(view.sel()[0])
         self.window.show_input_panel(
             "Search in project:",

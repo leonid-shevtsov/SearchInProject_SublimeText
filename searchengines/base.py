@@ -18,13 +18,13 @@ class Base:
 
     HAS_COLUMN_INFO = re.compile('^[^:]+:\d+:\d+:')
 
-    def __init__(self, settings):
+    def __init__(self, settings, view):
         """
             Receives the sublime.Settings object
         """
         self.settings = settings
         for setting_name in self.__class__.SETTINGS:
-            setting_value = self.settings.get(self._full_settings_name(setting_name), '')
+            setting_value = view.settings().get(self._full_settings_name(setting_name), self.settings.get(self._full_settings_name(setting_name), ''))
             if sys.version < '3':
                 setting_value = setting_value.encode()
             setattr(self, setting_name, setting_value)
