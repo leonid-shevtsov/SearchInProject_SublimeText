@@ -41,8 +41,11 @@ class Base:
         print("Running: %s" % " ".join(arguments))
 
         try:
-            startupinfo = subprocess.STARTUPINFO()
-            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            startupinfo = None
+            if os.name == 'nt':
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+
             pipe = subprocess.Popen(arguments,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
