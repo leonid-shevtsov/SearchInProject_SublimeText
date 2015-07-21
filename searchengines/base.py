@@ -41,10 +41,16 @@ class Base:
         print("Running: %s" % " ".join(arguments))
 
         try:
+            startupinfo = None
+            if os.name == 'nt':
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+
             pipe = subprocess.Popen(arguments,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                cwd=folders[0]
+                cwd=folders[0],
+                startupinfo=startupinfo
                 )
         except OSError: # Not FileNotFoundError for compatibility with Sublime Text 2
             raise RuntimeError("Could not find executable %s" % self.path_to_executable)
@@ -86,7 +92,9 @@ class Base:
 
     def _resolve_windows_path_to_executable(self):
         try:
-            self.path_to_executable = self._sanitize_output(subprocess.check_output("where %s" % self.path_to_executable))
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            self.path_to_executable = self._sanitize_output(subprocess.check_output("where %s" % self.path_to_executable, startupinfo=startupinfo))
         except subprocess.CalledProcessError:
             # do nothing, executable not found
             pass
