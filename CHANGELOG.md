@@ -1,5 +1,9 @@
 # Changelog for SearchInProject
 
+## v1.6.0 2015-07-21
+
+* List results in view
+
 ## v1.5.1 2015-03-18
 
 * Fix ack detection code for Sublime Text 2, by @keimlink

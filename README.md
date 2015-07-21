@@ -1,5 +1,7 @@
 # Search In Project
 
+![Search in Project screencast](https://raw.githubusercontent.com/leonid-shevtsov/SearchInProject_SublimeText/screencast/screencast.gif)
+
 This plugin for [Sublime Text 2 and 3](http://www.sublimetext.com/) lets you use your favorite search tool (`grep`, `ack`, `ag`, `git grep`, or `findstr`) to find strings aross your entire current Sublime Text project.
 
 It opens a quick selection panel to browse results, and highlights matches inside files.
@@ -23,7 +25,9 @@ My idea is that if you use this plugin it's because you already use one of the s
 * Use the key binding (`⌘⌥⇧F` on OS X, `Ctrl+Alt+Shift+F` on Windows), or
 * Call the "Search in Project" command;
 * Enter the search query;
-* Hit `Enter` (`Return`). In a short while you'll be presented with a "quck select" panel with the search results. Select any file from that panel (it supports fuzzy searching) to go to the match. The search string will be highlighted with an outline and a circle symbol in the gutter area.
+* Hit `Enter` (`Return`). You'll be presented with a "quick select" panel with the search results. Select any file from that panel (it supports fuzzy searching) to go to the match. The search string will be highlighted with an outline and a circle symbol in the gutter area.
+* The last item on the quick select panel is "List results in view". Pick it to see results in a regular editor view. (Tip: if you enter three ticks ("`") in the search box - it's going to be to be the first item.)
+
 
 If you select text and then run Search In Project, it will pre-fill the search string with the selection text; for example, to search for a word project-wide, do `⌘D, ⌘⌥⇧F, ↩`
 
