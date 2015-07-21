@@ -4,6 +4,7 @@ import os.path
 import os
 import sys
 import inspect
+from collections import defaultdict
 
 ### Start of fixing import paths
 # realpath() with make your script run, even if you symlink it :)
@@ -60,7 +61,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
             self.results = self.engine.run(text, folders)
             if self.results:
                 self.results = [[result[0].replace(self.common_path.replace('\"', ''), ''), result[1]] for result in self.results]
-                self.results.append("``` List results in view")
+                self.results.append("``` List results in view ```")
                 self.window.show_quick_panel(self.results, self.goto_result)
             else:
                 self.results = []
@@ -85,7 +86,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
         view = sublime.active_window().new_file()
         view.run_command('search_in_project_results',
             {'query': self.last_search_string,
-             'results': self.results,
+             'results': self.results[0:-1], # last result is "list in view"
              'common_path': self.common_path.replace('\"', '')})
 
     def search_folders(self):
@@ -111,15 +112,26 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
         return "\"" + "/".join(common_path) + "/\""
 
 class SearchInProjectResultsCommand(sublime_plugin.TextCommand):
-    def format_result(self, common_path, result):
-        filename, row, column = result[0].split(':')
-        text = result[1]
-        return "%s%s:\n  %s: %s\n" % (common_path, filename, row, text)
+    def format_result(self, common_path, filename, lines):
+        lines_text = "\n".join(["  %s: %s" % (location, text) for location, text in lines])
+        return "%s%s:\n%s\n" % (common_path, filename, lines_text)
+
+    def format_results(self, common_path, results, query):
+        grouped_by_filename = defaultdict(list)
+        for result in results:
+            filename, location = result[0].split(':', 1)
+            text = result[1]
+            grouped_by_filename[filename].append((location, text))
+
+        file_results = [self.format_result(common_path, filename, grouped_by_filename[filename]) for filename in grouped_by_filename]
+        return ("Search In Project results for \"%s\"\n\n" % query) + "\n".join(file_results)
 
     def run(self, edit, common_path, results, query):
         self.view.set_name('Find Results')
         self.view.set_scratch(True)
         self.view.set_syntax_file('Packages/Default/Find Results.hidden-tmLanguage')
-        results_text = ("Search In Project results for \"%s\"\n\n" % query) + "\n".join([self.format_result(common_path, result) for result in results])
+        results_text = self.format_results(common_path, results, query)
         self.view.insert(edit, self.view.text_point(0,0), results_text)
+        self.view.sel().clear()
+        self.view.sel().add(sublime.Region(0,0))
 
