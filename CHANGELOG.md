@@ -1,5 +1,9 @@
 # Changelog for SearchInProject
 
+## v1.6.1 2015-07-21
+
+* Avoid showing console window on Windows platform (thanks to @kojoru)
+
 ## v1.6.0 2015-07-21
 
 * List results in view
