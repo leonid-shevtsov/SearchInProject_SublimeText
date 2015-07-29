@@ -86,7 +86,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
         view = sublime.active_window().new_file()
         view.run_command('search_in_project_results',
             {'query': self.last_search_string,
-             'results': self.results[0:-1], # last result is "list in view"
+             'results': self.results,
              'common_path': self.common_path.replace('\"', '')})
 
     def search_folders(self):
