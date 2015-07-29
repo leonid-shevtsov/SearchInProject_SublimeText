@@ -1,5 +1,10 @@
 # Changelog for SearchInProject
 
+## v1.6.2 2015-07-29
+
+* Fix for missing result in results view (thanks to @dtaub)
+* Show line and file count in results view
+
 ## v1.6.1 2015-07-21
 
 * Avoid showing console window on Windows platform (thanks to @kojoru)
