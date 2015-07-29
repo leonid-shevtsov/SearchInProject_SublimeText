@@ -122,9 +122,12 @@ class SearchInProjectResultsCommand(sublime_plugin.TextCommand):
             filename, location = result[0].split(':', 1)
             text = result[1]
             grouped_by_filename[filename].append((location, text))
+        line_count = len(results)
+        file_count = len(grouped_by_filename)
 
         file_results = [self.format_result(common_path, filename, grouped_by_filename[filename]) for filename in grouped_by_filename]
-        return ("Search In Project results for \"%s\"\n\n" % query) + "\n".join(file_results)
+        return ("Search In Project results for \"%s\" (%u lines in %u files):\n\n" % (query, line_count, file_count)) \
+            + "\n".join(file_results)
 
     def run(self, edit, common_path, results, query):
         self.view.set_name('Find Results')
