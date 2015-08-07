@@ -1,5 +1,10 @@
 # Changelog for SearchInProject
 
+## v1.7.0 2015-08-07
+
+* Support The Platinum Searcher (thanks to @jodaka)
+* Added links to configuration files to the command palette, and a post-install message.
+
 ## v1.6.2 2015-07-29
 
 * Fix for missing result in results view (thanks to @dtaub)
