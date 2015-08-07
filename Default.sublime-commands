@@ -2,5 +2,19 @@
   {
     "caption": "Search In Project",
     "command": "search_in_project"
+  },
+  {
+    "caption": "Preferences: Search in Project Settings – Default",
+    "command": "open_file", "args":
+    {
+      "file": "${packages}/Search in Project/SearchInProject.sublime-settings"
+    }
+  },
+  {
+    "caption": "Preferences: Search in Project Settings – User",
+    "command": "open_file", "args":
+    {
+      "file": "${packages}/User/SearchInProject.sublime-settings"
+    }
   }
 ]

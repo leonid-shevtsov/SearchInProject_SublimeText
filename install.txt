@@ -1,0 +1,20 @@
+Thanks for installing Search in Project!
+----------------------------------------
+
+Please make sure you open the configuration file ( `Preferences - Search in Project Settings - User` in the Command Palette) and configure the engine you want to use:
+
+    {
+      "search_in_project_engine": "<your_search_engine>"
+    }
+
+where <your_search_engine> is one of:
+
+  the_platinum_searcher, the_silver_searcher, ack, grep, git_grep, grep, or find_str
+
+depending on your preference.
+
+* * *
+
+You can find detailed instructions in the readme at
+
+https://github.com/leonid-shevtsov/SearchInProject_SublimeText#search-in-project
