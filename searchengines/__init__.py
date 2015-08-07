@@ -1,1 +1,1 @@
-#__all__ = ["base", "grep", "ack", "the_silver_searcher", "git_grep"]
+#__all__ = ["base", "grep", "ack", "the_silver_searcher", "the_platinum_searcher", "git_grep"]
