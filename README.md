@@ -32,8 +32,8 @@ My idea is that if you use this plugin it's because you already use one of the s
 
 The supported search engines are:
 
-| Name | Description | Search in Project key
-| - | - | - |
+Name | Description | Search in Project key 
+---- | ----------- | ---------------------
 **[pt (The Platinum Searcher)](https://github.com/monochromegane/the_platinum_searcher)** | **fast, has binaries for every platform, recommended.** | `the_platinum_searcher`
 **[ag (The Silver Searcher)](http://geoff.greer.fm/ag/)** | **equally fast, only 3rd party binaries for Windows, also recommended** | `the_silver_searcher`
 [ack](http://beyondgrep.com/) | not as fast as `pt` and `ag`, but still pretty good. Depends on perl, thus not so easy to install on Windows. | `ack`
