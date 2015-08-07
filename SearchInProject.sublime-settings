@@ -19,7 +19,7 @@
   /* Ack configuration */
   "search_in_project_Ack_path_to_executable": "ack",
   "search_in_project_Ack_mandatory_options": "",
-  "search_in_project_Ack_common_options": "--type-add coffeescript=.coffee --type-add haml=.haml --type-add sass=.sass --type-add scss=.scss",
+  "search_in_project_Ack_common_options": "--type-add haml=.haml --type-add js=.jsx",
 
   /* TheSilverSearcher configuration */
   "search_in_project_TheSilverSearcher_path_to_executable": "ag",
