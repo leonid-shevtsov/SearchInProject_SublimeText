@@ -16,8 +16,6 @@ class Base:
         "common_options"
     ]
 
-    HAS_COLUMN_INFO = re.compile('^[^:]+:\d+:\d+:')
-
     def __init__(self, settings):
         """
             Receives the sublime.Settings object
@@ -30,6 +28,11 @@ class Base:
             setattr(self, setting_name, setting_value)
         if os.name=='nt':
             self._resolve_windows_path_to_executable()
+            self.line_with_match_re = re.compile(r'^[A-Z]:[^:]+:\d+:(\d+:)?')
+            self.min_colons_in_match = 3
+        else:
+            self.line_with_match_re = re.compile(r'^[^:]+:\d+:(\d+:)?')
+            self.min_colons_in_match = 2
 
     def run(self, query, folders):
         """
@@ -76,19 +79,23 @@ class Base:
         return output.decode('utf-8', 'ignore').strip()
 
     def _parse_output(self, output):
-        lines = output.split("\n")
-        line_parts = [line.split(":", 3) if Base.HAS_COLUMN_INFO.match(line) else line.split(":", 2) for line in lines]
-        line_parts = self._filter_lines_without_matches(line_parts)
-        return [(":".join(line[0:-1]), line[-1].strip()) for line in line_parts]
+        results = []
+        for line in output.split(os.linesep):
+            match = self.line_with_match_re.match(line)
+            if match is None:
+                continue
+            num_of_colons = self.min_colons_in_match
+            if match.groups()[0] is not None:
+                num_of_colons += 1
+            line_parts = line.split(':', num_of_colons)
+            results.append((':'.join(line_parts[:-1]), line_parts[-1].strip()))
+        return results
 
     def _is_search_error(self, returncode, output, error):
         returncode != 0
 
     def _full_settings_name(self, name):
         return "search_in_project_%s_%s" % (self.__class__.__name__, name)
-
-    def _filter_lines_without_matches(self, line_parts):
-        return filter(lambda line: len(line) > 2, line_parts)
 
     def _resolve_windows_path_to_executable(self):
         try:
