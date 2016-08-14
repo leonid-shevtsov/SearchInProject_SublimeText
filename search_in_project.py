@@ -60,7 +60,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
         try:
             self.results = self.engine.run(text, folders)
             if self.results:
-                self.results = [[result[0].replace(self.common_path.replace('\"', ''), ''), result[1]] for result in self.results]
+                self.results = [[result[0].replace(self.common_path.replace('\"', ''), ''), result[1][:1000]] for result in self.results]
                 self.results.append("``` List results in view ```")
                 self.window.show_quick_panel(self.results, self.goto_result)
             else:
