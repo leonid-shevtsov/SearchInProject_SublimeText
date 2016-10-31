@@ -29,6 +29,9 @@
   "search_in_project_ThePlatinumSearcher_path_to_executable": "pt",
   "search_in_project_ThePlatinumSearcher_mandatory_options": "--column --nogroup --nocolor",
 
+  /* Ripgrep configuration */
+  "search_in_project_Ripgrep_path_to_executable": "rg",
+  "search_in_project_Ripgrep_mandatory_options": "--column --no-heading --color never",
 
   /* GitGrep configuration */
   "search_in_project_GitGrep_path_to_executable": "git",
