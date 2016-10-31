@@ -1,5 +1,9 @@
 # Changelog for SearchInProject
 
+## v1.8.0 2016-10-31
+
+* Support Ripgrep
+
 ## v1.7.1 2016-08-14
 
 * Trim longs lines in results so Sublime Text doesn't hang #20 (thanks to @kojoru)
