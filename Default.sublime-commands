@@ -1,7 +1,11 @@
 [
   {
-    "caption": "Search In Project",
-    "command": "search_in_project"
+    "caption": "SearchInProject: Search",
+    "command": "search_in_project", "args": {"type": "search"},
+  },
+  {
+    "caption": "SearchInProject: Clear results",
+    "command": "search_in_project", "args": {"type": "clear"},
   },
   {
     "caption": "Preferences: Search in Project Settings – Default",

@@ -38,21 +38,25 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
         self.last_search_string = ''
         pass
 
-    def run(self):
-        self.settings = sublime.load_settings('SearchInProject.sublime-settings')
-        self.engine_name = self.settings.get("search_in_project_engine")
-        pushd = os.getcwd()
-        os.chdir(basedir)
-        __import__("searchengines.%s" % self.engine_name)
-        self.engine = searchengines.__dict__[self.engine_name].engine_class(self.settings)
-        os.chdir(pushd)
-        view = self.window.active_view()
-        selection_text = view.substr(view.sel()[0])
-        self.window.show_input_panel(
-            "Search in project:",
-            not "\n" in selection_text and selection_text or self.last_search_string,
-            self.perform_search, None, None)
-        pass
+    def run(self, type="search"):
+        if type == "search":
+            self.settings = sublime.load_settings('SearchInProject.sublime-settings')
+            self.engine_name = self.settings.get("search_in_project_engine")
+            pushd = os.getcwd()
+            os.chdir(basedir)
+            __import__("searchengines.%s" % self.engine_name)
+            self.engine = searchengines.__dict__[self.engine_name].engine_class(self.settings)
+            os.chdir(pushd)
+            view = self.window.active_view()
+            selection_text = view.substr(view.sel()[0])
+            self.window.show_input_panel(
+                "Search in project:",
+                not "\n" in selection_text and selection_text or self.last_search_string,
+                self.perform_search, None, None)
+        elif type == "clear":
+            self.clear_markup()
+        else:
+            raise Exception("unrecognized type \"%s\""%type)
 
     def perform_search(self, text):
         if not text:
@@ -81,10 +85,19 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
             if file_no == len(self.results) - 1: # last result is "list in view"
                 self.list_in_view()
             else:
-                file_name = self.common_path.replace('\"', '') + self.results[file_no][0]
-                view = self.window.open_file(file_name, sublime.ENCODED_POSITION)
+                file_name_and_col = self.common_path.replace('\"', '') + self.results[file_no][0]
+                view = self.window.open_file(file_name_and_col, sublime.ENCODED_POSITION)
                 regions = view.find_all(self.last_search_string, sublime.IGNORECASE)
                 view.add_regions("search_in_project", regions, "entity.name.filename.find-in-files", "circle", sublime.DRAW_OUTLINED)
+
+    def clear_markup(self):
+        for result in self.results[:-1]: # every result except the last one (the "list in view")
+            file_name_and_col = self.common_path.replace('\"', '') + result[0]
+            file_name = file_name_and_col.split(':')[0]
+            view = self.window.find_open_file(file_name)
+            if view: # if the view is no longer open, do nothing
+                view.erase_regions("search_in_project")
+        self.results = []
 
     def list_in_view(self):
         self.results.pop()
