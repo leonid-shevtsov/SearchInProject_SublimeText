@@ -96,18 +96,26 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
     def on_highlighted(self, file_no):
         self.last_selected_result_index = file_no
         if file_no != -1 and file_no != len(self.results) - 1: # last result is "list in view"
-            file_name_and_col = self.common_path.replace('\"', '') + self.results[file_no][0]
-            view = self.window.open_file(file_name_and_col, sublime.ENCODED_POSITION | sublime.TRANSIENT)
+            self.open_and_highlight_file(file_no, transient=True)
+
+    def open_and_highlight_file(self, file_no, transient=False):
+        file_name_and_col = self.common_path.replace('\"', '') + self.results[file_no][0]
+        flags = sublime.ENCODED_POSITION
+        if transient:
+            flags |= sublime.TRANSIENT
+        view = self.window.open_file(file_name_and_col, flags)
+
+        regions = view.find_all(self.last_search_string, sublime.IGNORECASE)
+        view.add_regions("search_in_project", regions, "entity.name.filename.find-in-files", "circle", sublime.DRAW_OUTLINED)
 
     def goto_result(self, file_no):
-        if file_no != -1:
+        if file_no == -1:
+            self.clear_markup()
+        else:
             if file_no == len(self.results) - 1: # last result is "list in view"
                 self.list_in_view()
             else:
-                file_name_and_col = self.common_path.replace('\"', '') + self.results[file_no][0]
-                view = self.window.open_file(file_name_and_col, sublime.ENCODED_POSITION)
-                regions = view.find_all(self.last_search_string, sublime.IGNORECASE)
-                view.add_regions("search_in_project", regions, "entity.name.filename.find-in-files", "circle", sublime.DRAW_OUTLINED)
+                self.open_and_highlight_file(file_no)
 
     def goto_relative_result(self, offset):
         if self.last_search_string:
