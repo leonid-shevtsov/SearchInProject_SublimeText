@@ -35,6 +35,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
 
     def __init__(self, window):
         sublime_plugin.WindowCommand.__init__(self, window)
+        self.results = []
         self.last_search_string = ''
         self.last_selected_result_index = 0
 
@@ -56,6 +57,10 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
             panel_view.run_command("select_all")
         elif type == "clear":
             self.clear_markup()
+        elif type == "next":
+            self.goto_relative_result(1)
+        elif type == "prev":
+            self.goto_relative_result(-1)
         else:
             raise Exception("unrecognized type \"%s\""%type)
 
@@ -103,6 +108,13 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
                 view = self.window.open_file(file_name_and_col, sublime.ENCODED_POSITION)
                 regions = view.find_all(self.last_search_string, sublime.IGNORECASE)
                 view.add_regions("search_in_project", regions, "entity.name.filename.find-in-files", "circle", sublime.DRAW_OUTLINED)
+
+    def goto_relative_result(self, offset):
+        if self.last_search_string:
+            new_index = self.last_selected_result_index + offset
+            if 0 <= new_index < len(self.results) - 1: # last result is "list in view"
+                self.last_selected_result_index = new_index
+                self.goto_result(new_index)
 
     def clear_markup(self):
         for result in self.results[:-1]: # every result except the last one (the "list in view")

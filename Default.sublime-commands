@@ -8,6 +8,14 @@
     "command": "search_in_project", "args": {"type": "clear"},
   },
   {
+    "caption": "SearchInProject: Next result",
+    "command": "search_in_project", "args": {"type": "next"},
+  },
+  {
+    "caption": "SearchInProject: Previous result",
+    "command": "search_in_project", "args": {"type": "prev"},
+  },
+  {
     "caption": "Preferences: Search in Project Settings – Default",
     "command": "open_file", "args":
     {
