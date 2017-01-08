@@ -49,10 +49,11 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
             os.chdir(pushd)
             view = self.window.active_view()
             selection_text = view.substr(view.sel()[0])
-            self.window.show_input_panel(
+            panel_view = self.window.show_input_panel(
                 "Search in project:",
                 not "\n" in selection_text and selection_text or self.last_search_string,
                 self.perform_search, None, None)
+            panel_view.run_command("select_all")
         elif type == "clear":
             self.clear_markup()
         else:
