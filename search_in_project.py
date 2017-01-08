@@ -36,7 +36,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
     def __init__(self, window):
         sublime_plugin.WindowCommand.__init__(self, window)
         self.last_search_string = ''
-        pass
+        self.last_selected_result_index = 0
 
     def run(self, type="search"):
         if type == "search":
@@ -62,6 +62,8 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
         if not text:
             return
 
+        if self.last_search_string != text:
+            self.last_selected_result_index = 0
         self.last_search_string = text
         folders = self.search_folders()
 
@@ -76,7 +78,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
                     self.results,
                     self.goto_result,
                     flags,
-                    0,
+                    self.last_selected_result_index,
                     self.on_highlighted)
             else:
                 self.results = []
@@ -86,6 +88,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
             sublime.error_message("%s running search engine %s:"%(e.__class__.__name__,self.engine_name) + "\n" + str(e))
 
     def on_highlighted(self, file_no):
+        self.last_selected_result_index = file_no
         if file_no != -1 and file_no != len(self.results) - 1: # last result is "list in view"
             file_name_and_col = self.common_path.replace('\"', '') + self.results[file_no][0]
             view = self.window.open_file(file_name_and_col, sublime.ENCODED_POSITION | sublime.TRANSIENT)
