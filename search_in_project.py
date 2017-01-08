@@ -71,7 +71,13 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
             if self.results:
                 self.results = [[result[0].replace(self.common_path.replace('\"', ''), ''), result[1][:self.MAX_RESULT_LINE_LENGTH]] for result in self.results]
                 self.results.append("``` List results in view ```")
-                self.window.show_quick_panel(self.results, self.goto_result)
+                flags = 0
+                self.window.show_quick_panel(
+                    self.results,
+                    self.goto_result,
+                    flags,
+                    0,
+                    self.on_highlighted)
             else:
                 self.results = []
                 sublime.message_dialog('No results')
@@ -79,6 +85,10 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
             self.results = []
             sublime.error_message("%s running search engine %s:"%(e.__class__.__name__,self.engine_name) + "\n" + str(e))
 
+    def on_highlighted(self, file_no):
+        if file_no != -1 and file_no != len(self.results) - 1: # last result is "list in view"
+            file_name_and_col = self.common_path.replace('\"', '') + self.results[file_no][0]
+            view = self.window.open_file(file_name_and_col, sublime.ENCODED_POSITION | sublime.TRANSIENT)
 
     def goto_result(self, file_no):
         if file_no != -1:
