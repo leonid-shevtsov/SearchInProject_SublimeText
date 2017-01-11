@@ -35,7 +35,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
 
     def __init__(self, window):
         sublime_plugin.WindowCommand.__init__(self, window)
-        self.last_search_string = ''
+        self.last_search_string = [''] 
         pass
 
     def run(self):
@@ -50,15 +50,21 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
         selection_text = view.substr(view.sel()[0])
         self.window.show_input_panel(
             "Search in project:",
-            not "\n" in selection_text and selection_text or self.last_search_string,
+            not "\n" in selection_text and selection_text,
             self.perform_search, None, None)
         pass
 
+    def perform_search_from_history(self, index):
+        if index > -1:
+            text = self.last_search_string[index]
+            self.perform_search(text)
+
     def perform_search(self, text):
         if not text:
+            self.window.show_quick_panel(self.last_search_string, self.perform_search_from_history)
             return
 
-        self.last_search_string = text
+        self.last_search_string.append(text)
         folders = self.search_folders()
 
         self.common_path = self.find_common_path(folders)
@@ -83,14 +89,14 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
             else:
                 file_name = self.common_path.replace('\"', '') + self.results[file_no][0]
                 view = self.window.open_file(file_name, sublime.ENCODED_POSITION)
-                regions = view.find_all(self.last_search_string)
+                regions = view.find_all(self.last_search_string[-1])
                 view.add_regions("search_in_project", regions, "entity.name.filename.find-in-files", "circle", sublime.DRAW_OUTLINED)
 
     def list_in_view(self):
         self.results.pop()
         view = sublime.active_window().new_file()
         view.run_command('search_in_project_results',
-            {'query': self.last_search_string,
+            {'query': self.last_search_string[-1],
              'results': self.results,
              'common_path': self.common_path.replace('\"', '')})
 
@@ -119,7 +125,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
 class SearchInProjectResultsCommand(sublime_plugin.TextCommand):
     def format_result(self, common_path, filename, lines):
         lines_text = "\n".join(["  %s: %s" % (location, text) for location, text in lines])
-        return "%s%s:\n%s\n" % (common_path, filename, lines_text)
+        return "%s%s\n%s\n" % (common_path, filename, lines_text)
 
     def format_results(self, common_path, results, query):
         grouped_by_filename = defaultdict(list)
