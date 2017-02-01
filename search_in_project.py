@@ -38,6 +38,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
         self.results = []
         self.last_search_string = ''
         self.last_selected_result_index = 0
+        self.saved_view = None
 
     def run(self, type="search"):
         if type == "search":
@@ -50,6 +51,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
             os.chdir(pushd)
             view = self.window.active_view()
             selection_text = view.substr(view.sel()[0])
+            self.saved_view = view
             panel_view = self.window.show_input_panel(
                 "Search in project:",
                 not "\n" in selection_text and selection_text or self.last_search_string,
@@ -111,6 +113,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
     def goto_result(self, file_no):
         if file_no == -1:
             self.clear_markup()
+            self.window.focus_view(self.saved_view)
         else:
             if file_no == len(self.results) - 1: # last result is "list in view"
                 self.list_in_view()
