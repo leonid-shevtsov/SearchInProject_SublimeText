@@ -34,9 +34,10 @@ The supported search engines are:
 
 Name | Description | Search in Project key 
 ---- | ----------- | ---------------------
+**[rg (ripgrep)](https://github.com/BurntSushi/ripgrep)** | **extremely fast, has binaries for every major platform, recommented** | `ripgrep`
 **[pt (The Platinum Searcher)](https://github.com/monochromegane/the_platinum_searcher)** | **fast, has binaries for every platform, recommended.** | `the_platinum_searcher`
-**[ag (The Silver Searcher)](http://geoff.greer.fm/ag/)** | **equally fast, only 3rd party binaries for Windows, also recommended** | `the_silver_searcher`
-[ack](http://beyondgrep.com/) | not as fast as `pt` and `ag`, but still pretty good. Depends on perl, thus not so easy to install on Windows. | `ack`
+**[ag (The Silver Searcher)](http://geoff.greer.fm/ag/)** | **fast, only 3rd party binaries for Windows, supports backreferences in regular expressions, also recommended** | `the_silver_searcher`
+[ack](http://beyondgrep.com/) | not as fast as `pt`, `ag`, or `rg`, but still pretty good. Depends on perl, thus not so easy to install on Windows. | `ack`
 [git grep](http://git-scm.com/docs/git-grep) | packaged with Git and really fast, but only works in Git repositories. Recommended if you use Windows and Git and really don't want to install anything else. | `git_grep`
 [grep](https://en.wikipedia.org/wiki/Grep) | fallback search tool available on Linux and OSX systems. Not recommended - just use the built-in Sublime Text search instead. | `grep`
 [findstr](https://technet.microsoft.com/en-us/library/Bb490907.aspx) | fallback search tool available on Windows. Not recommended - just use the built-in Sublime Text search instead. | `find_str`
