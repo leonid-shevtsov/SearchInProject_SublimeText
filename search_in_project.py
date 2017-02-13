@@ -4,6 +4,7 @@ import os.path
 import os
 import sys
 import inspect
+import re
 from collections import defaultdict
 
 ### Start of fixing import paths
@@ -60,18 +61,26 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
             self.perform_search(text)
 
     def perform_search(self, text):
+
         if not text:
+            # show the list of previous searches
             self.window.show_quick_panel(self.last_search_string, self.perform_search_from_history)
             return
 
+        # add the current search to the list of previous searches
         self.last_search_string.append(text)
         folders = self.search_folders()
 
         self.common_path = self.find_common_path(folders)
+
         try:
             self.results = self.engine.run(text, folders)
+            self.results = self.makeUnique(self.results);
             if self.results:
-                self.results = [[result[0].replace(self.common_path.replace('\"', ''), ''), result[1][:self.MAX_RESULT_LINE_LENGTH]] for result in self.results]
+                self.results = [
+                    [result[0].replace(self.common_path.replace('\"', ''), ''), 
+                    result[1][:self.MAX_RESULT_LINE_LENGTH]
+                ] for result in self.results]
                 self.results.append("``` List results in view ```")
                 self.window.show_quick_panel(self.results, self.goto_result)
             else:
@@ -81,6 +90,13 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
             self.results = []
             sublime.error_message("%s running search engine %s:"%(e.__class__.__name__,self.engine_name) + "\n" + str(e))
 
+    def makeUnique(self,seq): 
+        # order preserving
+        checked = []
+        for e in seq:
+           if e not in checked:
+               checked.append(e)
+        return checked
 
     def goto_result(self, file_no):
         if file_no != -1:
@@ -149,3 +165,40 @@ class SearchInProjectResultsCommand(sublime_plugin.TextCommand):
         self.view.sel().clear()
         self.view.sel().add(sublime.Region(0,0))
 
+class FindInFilesGotoCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        print("FindInFiles Goto");
+        view = self.view
+        if view.name() == "Find Results":
+            line_no = self.get_line_no()
+            file_name = self.get_file()
+            if line_no is not None and file_name is not None:
+                file_loc = "%s:%s" % (file_name, line_no)
+                view.window().open_file(file_loc, sublime.ENCODED_POSITION)
+            elif file_name is not None:
+                view.window().open_file(file_name)
+
+    def get_line_no(self):
+        view = self.view
+        if len(view.sel()) == 1:
+            line_text = view.substr(view.line(view.sel()[0]))
+            match = re.match(r"\s*(\d+):.+", line_text)
+            if match:
+                return match.group(1)
+        return None
+
+    def get_file(self):
+        view = self.view
+        if len(view.sel()) == 1:
+            # get the current line
+            line = view.line(view.sel()[0])
+            # while we are not at the beginning of the file
+            while line.begin() > 0:
+                # get the line text
+                line_text = view.substr(line)
+                match = re.match(r"^(?!.\s.\d).*", line_text)
+                if match:
+                    if os.path.exists(line_text):
+                        return line_text
+                line = view.line(line.begin() - 1)
+        return None
