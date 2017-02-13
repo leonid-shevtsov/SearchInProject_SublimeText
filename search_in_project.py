@@ -68,7 +68,9 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
             return
 
         # add the current search to the list of previous searches
-        self.last_search_string.append(text)
+        # self.last_search_string.append(text)
+        self.last_search_string = [text] + self.last_search_string
+        self.last_search_string = self.makeUnique(self.last_search_string)
         folders = self.search_folders()
 
         self.common_path = self.find_common_path(folders)
