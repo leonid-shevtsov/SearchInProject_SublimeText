@@ -4,6 +4,7 @@ import os.path
 import os
 import sys
 import inspect
+import re
 from collections import defaultdict
 
 ### Start of fixing import paths
@@ -35,7 +36,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
 
     def __init__(self, window):
         sublime_plugin.WindowCommand.__init__(self, window)
-        self.last_search_string = ''
+        self.last_search_string = [''] 
         pass
 
     def run(self):
@@ -50,22 +51,38 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
         selection_text = view.substr(view.sel()[0])
         self.window.show_input_panel(
             "Search in project:",
-            not "\n" in selection_text and selection_text or self.last_search_string,
+            not "\n" in selection_text and selection_text,
             self.perform_search, None, None)
         pass
 
+    def perform_search_from_history(self, index):
+        if index > -1:
+            text = self.last_search_string[index]
+            self.perform_search(text)
+
     def perform_search(self, text):
+
         if not text:
+            # show the list of previous searches
+            self.window.show_quick_panel(self.last_search_string, self.perform_search_from_history)
             return
 
-        self.last_search_string = text
+        # add the current search to the list of previous searches
+        # self.last_search_string.append(text)
+        self.last_search_string = [text] + self.last_search_string
+        self.last_search_string = self.makeUnique(self.last_search_string)
         folders = self.search_folders()
 
         self.common_path = self.find_common_path(folders)
+
         try:
             self.results = self.engine.run(text, folders)
+            self.results = self.makeUnique(self.results);
             if self.results:
-                self.results = [[result[0].replace(self.common_path.replace('\"', ''), ''), result[1][:self.MAX_RESULT_LINE_LENGTH]] for result in self.results]
+                self.results = [
+                    [result[0].replace(self.common_path.replace('\"', ''), ''), 
+                    result[1][:self.MAX_RESULT_LINE_LENGTH]
+                ] for result in self.results]
                 self.results.append("``` List results in view ```")
                 self.window.show_quick_panel(self.results, self.goto_result)
             else:
@@ -75,6 +92,13 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
             self.results = []
             sublime.error_message("%s running search engine %s:"%(e.__class__.__name__,self.engine_name) + "\n" + str(e))
 
+    def makeUnique(self,seq): 
+        # order preserving
+        checked = []
+        for e in seq:
+           if e not in checked:
+               checked.append(e)
+        return checked
 
     def goto_result(self, file_no):
         if file_no != -1:
@@ -83,14 +107,14 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
             else:
                 file_name = self.common_path.replace('\"', '') + self.results[file_no][0]
                 view = self.window.open_file(file_name, sublime.ENCODED_POSITION)
-                regions = view.find_all(self.last_search_string)
+                regions = view.find_all(self.last_search_string[0])
                 view.add_regions("search_in_project", regions, "entity.name.filename.find-in-files", "circle", sublime.DRAW_OUTLINED)
 
     def list_in_view(self):
         self.results.pop()
         view = sublime.active_window().new_file()
         view.run_command('search_in_project_results',
-            {'query': self.last_search_string,
+            {'query': self.last_search_string[0],
              'results': self.results,
              'common_path': self.common_path.replace('\"', '')})
 
@@ -119,7 +143,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
 class SearchInProjectResultsCommand(sublime_plugin.TextCommand):
     def format_result(self, common_path, filename, lines):
         lines_text = "\n".join(["  %s: %s" % (location, text) for location, text in lines])
-        return "%s%s:\n%s\n" % (common_path, filename, lines_text)
+        return "%s%s\n%s\n" % (common_path, filename, lines_text)
 
     def format_results(self, common_path, results, query):
         grouped_by_filename = defaultdict(list)
@@ -135,7 +159,7 @@ class SearchInProjectResultsCommand(sublime_plugin.TextCommand):
             + "\n".join(file_results)
 
     def run(self, edit, common_path, results, query):
-        self.view.set_name('Find Results')
+        self.view.set_name("s:%s" % (query))
         self.view.set_scratch(True)
         self.view.set_syntax_file('Packages/Default/Find Results.hidden-tmLanguage')
         results_text = self.format_results(common_path, results, query)
@@ -143,3 +167,48 @@ class SearchInProjectResultsCommand(sublime_plugin.TextCommand):
         self.view.sel().clear()
         self.view.sel().add(sublime.Region(0,0))
 
+class FindInFilesGotoCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        view = self.view
+        if view.name()[:2] == "s:":
+            line_no = self.get_line_no()
+            file_name = self.get_file()
+            query = self.get_search_query()
+            print("query:" + query)
+            if line_no is not None and file_name is not None:
+                file_loc = "%s:%s" % (file_name, line_no)
+                view = view.window().open_file(file_loc, sublime.ENCODED_POSITION)
+                regions = view.find_all(query)
+                view.add_regions("search_in_project", regions, "entity.name.filename.find-in-files", "circle", sublime.DRAW_OUTLINED)
+            elif file_name is not None:
+                view.window().open_file(file_name)
+
+    def get_search_query(self):
+        view = self.view
+        print("view name: " + view.name())
+        return view.name()[2:] 
+
+    def get_line_no(self):
+        view = self.view
+        if len(view.sel()) == 1:
+            line_text = view.substr(view.line(view.sel()[0]))
+            match = re.match(r"\s*(\d+):.+", line_text)
+            if match:
+                return match.group(1)
+        return None
+
+    def get_file(self):
+        view = self.view
+        if len(view.sel()) == 1:
+            # get the current line
+            line = view.line(view.sel()[0])
+            # while we are not at the beginning of the file
+            while line.begin() > 0:
+                # get the line text
+                line_text = view.substr(line)
+                match = re.match(r"^(?!.\s.\d).*", line_text)
+                if match:
+                    if os.path.exists(line_text):
+                        return line_text
+                line = view.line(line.begin() - 1)
+        return None

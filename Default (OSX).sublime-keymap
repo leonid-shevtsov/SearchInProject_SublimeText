@@ -1,3 +1,14 @@
 [
-    { "keys": ["alt+super+shift+f"], "command": "search_in_project" }
+    { 
+	    "keys": ["alt+super+shift+f"], "command": "search_in_project" ,
+	  },
+	  {
+	    "keys": ["enter"], 
+	    "command": "find_in_files_goto" ,
+	    "context": [{
+	        "key": "selector",
+	        "operator": "equal",
+	        "operand": "text.find-in-files"
+	    }]
+	  }
 ]
