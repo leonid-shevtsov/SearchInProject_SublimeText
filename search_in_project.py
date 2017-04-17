@@ -173,11 +173,20 @@ class FindInFilesGotoCommand(sublime_plugin.TextCommand):
         if view.name()[:2] == "s:":
             line_no = self.get_line_no()
             file_name = self.get_file()
+            query = self.get_search_query()
+            print("query:" + query)
             if line_no is not None and file_name is not None:
                 file_loc = "%s:%s" % (file_name, line_no)
-                view.window().open_file(file_loc, sublime.ENCODED_POSITION)
+                view = view.window().open_file(file_loc, sublime.ENCODED_POSITION)
+                regions = view.find_all(query)
+                view.add_regions("search_in_project", regions, "entity.name.filename.find-in-files", "circle", sublime.DRAW_OUTLINED)
             elif file_name is not None:
                 view.window().open_file(file_name)
+
+    def get_search_query(self):
+        view = self.view
+        print("view name: " + view.name())
+        return view.name()[2:] 
 
     def get_line_no(self):
         view = self.view
