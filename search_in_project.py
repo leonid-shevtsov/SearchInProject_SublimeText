@@ -113,8 +113,9 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
     def list_in_view(self):
         self.results.pop()
         view = sublime.active_window().new_file()
+        print(self.last_search_string)
         view.run_command('search_in_project_results',
-            {'query': self.last_search_string[-1],
+            {'query': self.last_search_string[0],
              'results': self.results,
              'common_path': self.common_path.replace('\"', '')})
 
@@ -159,7 +160,7 @@ class SearchInProjectResultsCommand(sublime_plugin.TextCommand):
             + "\n".join(file_results)
 
     def run(self, edit, common_path, results, query):
-        self.view.set_name('Find Results')
+        self.view.set_name("s:%s" % (query))
         self.view.set_scratch(True)
         self.view.set_syntax_file('Packages/Default/Find Results.hidden-tmLanguage')
         results_text = self.format_results(common_path, results, query)
@@ -170,7 +171,7 @@ class SearchInProjectResultsCommand(sublime_plugin.TextCommand):
 class FindInFilesGotoCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         view = self.view
-        if view.name() == "Find Results":
+        if view.name()[:2] == "s:":
             line_no = self.get_line_no()
             file_name = self.get_file()
             if line_no is not None and file_name is not None:
