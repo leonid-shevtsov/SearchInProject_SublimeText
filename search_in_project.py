@@ -169,7 +169,6 @@ class SearchInProjectResultsCommand(sublime_plugin.TextCommand):
 
 class FindInFilesGotoCommand(sublime_plugin.TextCommand):
     def run(self, edit):
-        print("FindInFiles Goto");
         view = self.view
         if view.name() == "Find Results":
             line_no = self.get_line_no()
