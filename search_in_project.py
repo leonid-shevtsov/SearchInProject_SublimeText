@@ -107,13 +107,12 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
             else:
                 file_name = self.common_path.replace('\"', '') + self.results[file_no][0]
                 view = self.window.open_file(file_name, sublime.ENCODED_POSITION)
-                regions = view.find_all(self.last_search_string[-1])
+                regions = view.find_all(self.last_search_string[0])
                 view.add_regions("search_in_project", regions, "entity.name.filename.find-in-files", "circle", sublime.DRAW_OUTLINED)
 
     def list_in_view(self):
         self.results.pop()
         view = sublime.active_window().new_file()
-        print(self.last_search_string)
         view.run_command('search_in_project_results',
             {'query': self.last_search_string[0],
              'results': self.results,
