@@ -28,6 +28,11 @@ basedir = os.getcwd()
 
 
 class SearchInProjectCommand(sublime_plugin.WindowCommand):
+
+    # Used to trim lines for the results quick panel. Without trimming Sublime Text
+    # *will* hang on long lines - often encountered in minified Javascript, for example.
+    MAX_RESULT_LINE_LENGTH = 1000
+
     def __init__(self, window):
         sublime_plugin.WindowCommand.__init__(self, window)
         self.last_search_string = ''
@@ -60,7 +65,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
         try:
             self.results = self.engine.run(text, folders)
             if self.results:
-                self.results = [[result[0].replace(self.common_path, ''), result[1]] for result in self.results]
+                self.results = [[result[0].replace(self.common_path, ''), result[1][:self.MAX_RESULT_LINE_LENGTH]] for result in self.results]
                 self.results.append("``` List results in view ```")
                 self.window.show_quick_panel(self.results, self.goto_result)
             else:

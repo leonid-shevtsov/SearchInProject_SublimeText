@@ -2,7 +2,7 @@
 
 ![Search in Project screencast](https://raw.githubusercontent.com/leonid-shevtsov/SearchInProject_SublimeText/screencast/screencast.gif)
 
-This plugin for [Sublime Text 2 and 3](http://www.sublimetext.com/) lets you use your favorite search tool (`grep`, `ack`, `ag`, `pt`, `git grep`, or `findstr`) to find strings aross your entire current Sublime Text project.
+This plugin for [Sublime Text 2 and 3](http://www.sublimetext.com/) lets you use your favorite search tool (`grep`, `ack`, `ag`, `pt`, `rg`, `git grep`, or `findstr`) to find strings aross your entire current Sublime Text project.
 
 It opens a quick selection panel to browse results, and highlights matches inside files.
 
