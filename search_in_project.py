@@ -66,8 +66,11 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
             self.results = self.engine.run(text, folders)
             if self.results:
                 self.results = [[result[0].replace(self.common_path.replace('\"', ''), ''), result[1][:self.MAX_RESULT_LINE_LENGTH]] for result in self.results]
-                self.results.append("``` List results in view ```")
-                self.window.show_quick_panel(self.results, self.goto_result)
+                if self.settings.get('search_in_project_show_list_by_default') == 'true':
+                    self.list_in_view()
+                else:
+                    self.results.append("``` List results in view ```")
+                    self.window.show_quick_panel(self.results, self.goto_result)
             else:
                 self.results = []
                 sublime.message_dialog('No results')

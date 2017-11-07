@@ -1,5 +1,9 @@
 # Changelog for SearchInProject
 
+## Upcoming
+
+* Add new option `search_in_project_show_list_by_default` to skip the quick panel and go straight to the list view
+
 ## v1.8.0 2016-10-31
 
 * Support Ripgrep
