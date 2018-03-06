@@ -42,21 +42,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
 
     def run(self, type="search"):
         if type == "search":
-            self.settings = sublime.load_settings('SearchInProject.sublime-settings')
-            self.engine_name = self.settings.get("search_in_project_engine")
-            pushd = os.getcwd()
-            os.chdir(basedir)
-            __import__("searchengines.%s" % self.engine_name)
-            self.engine = searchengines.__dict__[self.engine_name].engine_class(self.settings)
-            os.chdir(pushd)
-            view = self.window.active_view()
-            selection_text = view.substr(view.sel()[0])
-            self.saved_view = view
-            panel_view = self.window.show_input_panel(
-                "Search in project:",
-                not "\n" in selection_text and selection_text or self.last_search_string,
-                self.perform_search, None, None)
-            panel_view.run_command("select_all")
+            self.search()
         elif type == "clear":
             self.clear_markup()
         elif type == "next":
@@ -65,6 +51,26 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
             self.goto_relative_result(-1)
         else:
             raise Exception("unrecognized type \"%s\""%type)
+
+    def load_search_engine(self):
+        self.settings = sublime.load_settings('SearchInProject.sublime-settings')
+        self.engine_name = self.settings.get("search_in_project_engine")
+        pushd = os.getcwd()
+        os.chdir(basedir)
+        __import__("searchengines.%s" % self.engine_name)
+        self.engine = searchengines.__dict__[self.engine_name].engine_class(self.settings)
+        os.chdir(pushd)
+
+    def search(self):
+        self.load_search_engine()
+        view = self.window.active_view()
+        selection_text = view.substr(view.sel()[0])
+        self.saved_view = view
+        panel_view = self.window.show_input_panel(
+            "Search in project:",
+            not "\n" in selection_text and selection_text or self.last_search_string,
+            self.perform_search, None, None)
+        panel_view.run_command("select_all")
 
     def perform_search(self, text):
         if not text:
