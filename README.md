@@ -9,7 +9,7 @@ It opens a quick selection panel to browse results, and highlights matches insid
 ## Usage
 
 * Use the key binding (`⌘⌥⇧F` on OS X, `Ctrl+Alt+Shift+F` on Windows and Linux), or
-* Call the "Search in Project" command;
+* Call the "SearchInProject: Search" command;
 * Enter the search query;
 * Hit `Enter` (`Return`). You'll be presented with a "quick select" panel with the search results. Select any file from that panel (it supports fuzzy searching) to go to the match. The search string will be highlighted with an outline and a circle symbol in the gutter area.
 * The last item on the quick select panel is "List results in view". Pick it to see results in a regular editor view. (Tip: if you enter three ticks ("`") in the search box - it's going to be to be the first item.)
@@ -32,7 +32,7 @@ My idea is that if you use this plugin it's because you already use one of the s
 
 The supported search engines are:
 
-Name | Description | Search in Project key 
+Name | Description | Search in Project key
 ---- | ----------- | ---------------------
 **[pt (The Platinum Searcher)](https://github.com/monochromegane/the_platinum_searcher)** | **fast, has binaries for every platform, recommended.** | `the_platinum_searcher`
 **[ag (The Silver Searcher)](http://geoff.greer.fm/ag/)** | **equally fast, only 3rd party binaries for Windows, also recommended** | `the_silver_searcher`
