@@ -14,11 +14,11 @@ It opens a quick selection panel to browse results, and highlights matches insid
 * Hit `Enter` (`Return`). You'll be presented with a "quick select" panel with the search results. Select any file from that panel (it supports fuzzy searching) to go to the match. The search string will be highlighted with an outline and a circle symbol in the gutter area.
 * The last item on the quick select panel is "List results in view". Pick it to see results in a regular editor view. (Tip: if you enter three ticks ("`") in the search box - it's going to be to be the first item.)
 
-If you select text and then run Search In Project, it will pre-fill the search string with the selection text; for example, to search for a word project-wide, do `⌘D, ⌘⌥⇧F, ↩`
+If you select text and run Search In Project, the program will pre-fill the search string with the selection text. For an example, to search for a word project-wide, press the following buttons: `⌘D, ⌘⌥⇧F, ↩`.
 
-If you run Search In Project again, it will remember the last search string, so the next search is just an `↩` away.
+If you run Search In Project again, the program will remember the last search string, so the next search will be an ↩ away.
 
-**Important note for Windows users: the current release has known issues with running executables, I'd appreciate any bug reports from the field.**
+**Important note for Windows users: the current release has known issues with running executables, and I would appreciate any bug reports from the field.**
 
 ## Installation
 
@@ -41,7 +41,7 @@ Name | Description | Search in Project key
 [grep](https://en.wikipedia.org/wiki/Grep) | fallback search tool available on Linux and OSX systems. Not recommended - just use the built-in Sublime Text search instead. | `grep`
 [findstr](https://technet.microsoft.com/en-us/library/Bb490907.aspx) | fallback search tool available on Windows. Not recommended - just use the built-in Sublime Text search instead. | `find_str`
 
-**You need to choose the engine you want to use in the configuration file. The default is the one available on every system, but easily the worst.**
+**You need to choose the engine that you want to use in the configuration file. The default is the one that available on every system, but it is easily the worst.**
 
 ## Configuration
 
