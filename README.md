@@ -1,5 +1,7 @@
 # Search In Project
 
+<a href='https://ko-fi.com/X8X19BQH' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+
 ![Search in Project screencast](https://raw.githubusercontent.com/leonid-shevtsov/SearchInProject_SublimeText/screencast/screencast.gif)
 
 This plugin for [Sublime Text 2 and 3](http://www.sublimetext.com/) lets you use your favorite search tool (`grep`, `ack`, `ag`, `pt`, `rg`, `git grep`, or `findstr`) to find strings aross your entire current Sublime Text project.
@@ -32,14 +34,14 @@ My idea is that if you use this plugin it's because you already use one of the s
 
 The supported search engines are:
 
-Name | Description | Search in Project key
----- | ----------- | ---------------------
-**[pt (The Platinum Searcher)](https://github.com/monochromegane/the_platinum_searcher)** | **fast, has binaries for every platform, recommended.** | `the_platinum_searcher`
-**[ag (The Silver Searcher)](http://geoff.greer.fm/ag/)** | **equally fast, only 3rd party binaries for Windows, also recommended** | `the_silver_searcher`
-[ack](http://beyondgrep.com/) | not as fast as `pt` and `ag`, but still pretty good. Depends on perl, thus not so easy to install on Windows. | `ack`
-[git grep](http://git-scm.com/docs/git-grep) | packaged with Git and really fast, but only works in Git repositories. Recommended if you use Windows and Git and really don't want to install anything else. | `git_grep`
-[grep](https://en.wikipedia.org/wiki/Grep) | fallback search tool available on Linux and OSX systems. Not recommended - just use the built-in Sublime Text search instead. | `grep`
-[findstr](https://technet.microsoft.com/en-us/library/Bb490907.aspx) | fallback search tool available on Windows. Not recommended - just use the built-in Sublime Text search instead. | `find_str`
+| Name                                                                                      | Description                                                                                                                                                   | Search in Project key   |
+| ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| **[pt (The Platinum Searcher)](https://github.com/monochromegane/the_platinum_searcher)** | **fast, has binaries for every platform, recommended.**                                                                                                       | `the_platinum_searcher` |
+| **[ag (The Silver Searcher)](http://geoff.greer.fm/ag/)**                                 | **equally fast, only 3rd party binaries for Windows, also recommended**                                                                                       | `the_silver_searcher`   |
+| [ack](http://beyondgrep.com/)                                                             | not as fast as `pt` and `ag`, but still pretty good. Depends on perl, thus not so easy to install on Windows.                                                 | `ack`                   |
+| [git grep](http://git-scm.com/docs/git-grep)                                              | packaged with Git and really fast, but only works in Git repositories. Recommended if you use Windows and Git and really don't want to install anything else. | `git_grep`              |
+| [grep](https://en.wikipedia.org/wiki/Grep)                                                | fallback search tool available on Linux and OSX systems. Not recommended - just use the built-in Sublime Text search instead.                                 | `grep`                  |
+| [findstr](https://technet.microsoft.com/en-us/library/Bb490907.aspx)                      | fallback search tool available on Windows. Not recommended - just use the built-in Sublime Text search instead.                                               | `find_str`              |
 
 **You need to choose the engine that you want to use in the configuration file. The default is the one that available on every system, but it is easily the worst.**
 
@@ -54,6 +56,6 @@ If Search In Project has problems with locating executables in Mac, install the 
 
 You can always configure the full path to any search engine in the settings, as a catch-all solution.
 
-* * *
+---
 
 Made by [Leonid Shevtsov](http://leonid.shevtsov.me)
