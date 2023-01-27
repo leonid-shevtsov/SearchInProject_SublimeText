@@ -37,7 +37,7 @@ class Base:
             the absolute file path, and optionally row information, separated
             by a semicolon, and the second element is the result string
         """
-        arguments = self._arguments(query, folders)
+        arguments = self._arguments(query, self._remove_subfolders(folders))
         print("Running: %s" % " ".join(arguments))
 
         try:
@@ -49,7 +49,7 @@ class Base:
             pipe = subprocess.Popen(arguments,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                cwd=folders[0],
+                cwd=os.path.commonprefix(folders),
                 startupinfo=startupinfo
                 )
         except OSError: # Not FileNotFoundError for compatibility with Sublime Text 2
@@ -60,6 +60,17 @@ class Base:
         if self._is_search_error(pipe.returncode, output, error):
             raise RuntimeError(self._sanitize_output(error))
         return self._parse_output(self._sanitize_output(output))
+
+    def _remove_subfolders(self, folders):
+        """
+            Optimize folder list by removing possible subfolders.
+        """
+        unique_folders = []
+        for folder in sorted(folders):
+            if (len(unique_folders) == 0 or
+                not folder.startswith(unique_folders[-1])):
+                unique_folders.append(folder)
+        return unique_folders
 
     def _arguments(self, query, folders):
         """

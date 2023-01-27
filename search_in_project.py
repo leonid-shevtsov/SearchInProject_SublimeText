@@ -81,7 +81,7 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
         self.last_search_string = text
         folders = self.search_folders()
 
-        self.common_path = self.find_common_path(folders)
+        self.common_path = os.path.commonprefix(folders)
         try:
             self.results = self.engine.run(text, folders)
             if self.results:
@@ -163,18 +163,6 @@ class SearchInProjectCommand(sublime_plugin.WindowCommand):
                 search_folders = [os.path.expanduser("~")]
         return search_folders
 
-    def find_common_path(self, paths):
-        paths = [path.replace("\"", "") for path in paths]
-        paths = [path.split("/") for path in paths]
-        common_path = []
-        while 0 not in [len(path) for path in paths]:
-            next_segment = list(set([path.pop(0) for path in paths]))
-            if len(next_segment) == 1:
-                common_path += next_segment
-            else:
-                break
-        return "\"" + "/".join(common_path) + "/\""
-
 class SearchInProjectResultsCommand(sublime_plugin.TextCommand):
     def format_result(self, common_path, filename, lines):
         lines_text = "\n".join(["  %s: %s" % (location, text) for location, text in lines])
@@ -201,4 +189,3 @@ class SearchInProjectResultsCommand(sublime_plugin.TextCommand):
         self.view.insert(edit, self.view.text_point(0,0), results_text)
         self.view.sel().clear()
         self.view.sel().add(sublime.Region(0,0))
-
