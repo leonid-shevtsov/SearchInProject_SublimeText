@@ -1,6 +1,10 @@
-# Search In Project
+# Project is discontinued!
 
-<a href='https://ko-fi.com/X8X19BQH' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+I'm not using Sublime Text anymore and have no interest in supporting this project. 
+
+I added the MIT license to be explicit, so if you want to carry one, you have my full permission - and gratitude!
+
+# Search In Project
 
 ![Search in Project screencast](https://raw.githubusercontent.com/leonid-shevtsov/SearchInProject_SublimeText/screencast/screencast.gif)
 
